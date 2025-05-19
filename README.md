@@ -1,1 +1,1 @@
-# GEUNavEra
+# GEUNavEra - Campus Navigation System
