@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dispensary & Tuck Shop</title>
+  <style>
+    body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e1fee4;
+  margin: 0;
+  padding: 0;
+  color: #1b5e20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+    .main-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+      width: 90%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1b5e20;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: linear-gradient(135deg, #d0f0c0, #a5d6a7);
+      color: #1b5e20;
+      padding: 20px;
+      border-radius: 15px;
+      width: 150px;
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      position: relative;
+      background: #f9fbe7;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 90%;
+      max-height: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .close-btn,
+    .page-back-btn {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s;
+    }
+
+    .close-btn:hover,
+    .page-back-btn:hover {
+      background: #1b5e20;
+    }
+
+    .page-back-container {
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-card">
+    <h1>Dispensary & Tuck Shop</h1>
+    <div class="container" id="cardContainer">
+      <!-- Cards will be inserted here -->
+    </div>
+
+    <div class="page-back-container">
+      <button class="page-back-btn" onclick="goBack()">Back</button>
+    </div>
+  </div>
+
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <img id="modalImage" src="" alt="Selected Section" />
+      <button class="close-btn" onclick="closeImage()">Back</button>
+    </div>
+  </div>
+
+  <script>
+    const sections = [
+      { name: "Dispensary", src: "{{ url_for('static', filename='distuck1.jpeg') }}" },
+      { name: "Tuckshop", src: "{{ url_for('static', filename='distuck2.jpeg') }}" },
+    ];
+
+    function renderCards() {
+      const container = document.getElementById("cardContainer");
+      const row = document.createElement("div");
+      row.className = "row";
+
+      sections.forEach((sec) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.textContent = sec.name;
+        card.onclick = () => showImage(sec.src);
+        row.appendChild(card);
+      });
+
+      container.appendChild(row);
+    }
+
+    function showImage(src) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modalImg.src = src;
+      modal.style.display = 'flex';
+    }
+
+    function closeImage() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    function goBack() {
+      window.location.href = "{{ url_for('map_page') }}";  // Ensures back goes to the map page
+    }
+
+    renderCards();
+  </script>
+</body>
+</html>

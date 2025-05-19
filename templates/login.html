@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Graphic Era</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-card">
+        <div class="header">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+            <div class="divider"></div>
+            <div class="title">
+                <h1><span class="red">Graphic</span> Era</h1>
+                <p>Deemed to be University</p>
+            </div>
+        </div>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <label><i class="fas fa-user icon-blue"></i></label>
+                <input type="text" name="userid" placeholder=" User ID" required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-key icon-blue"></i></label>
+                <input type="password" name="password" id="password" placeholder=" Password" required>
+                <i class="fas fa-eye-slash toggle-eye" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-envelope icon-blue"></i></label>
+                <input type="email" name="email" placeholder=" Email" required>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-shield-alt icon-blue"></i></label>
+                <input type="text" id="captcha-input" name="captcha_input" placeholder="Enter CAPTCHA" required>
+            </div>
+
+            <div class="captcha-box">
+                <span id="captcha-text"></span>
+                <button type="button" onclick="generateCaptcha()">↻</button>
+            </div>
+
+            <button class="login-button" type="submit">LOGIN</button>
+        </form>
+
+        <!-- Toast Message for Successful Login -->
+        <div id="login-toast" class="toast hidden">
+            <p>Login successful!</p>
+        </div>
+
+        <!-- Extra Links -->
+        <div class="extra-links">
+            <a href="javascript:void(0);" onclick="showForgotPassword()">Forgot Password?</a>
+            <a href="javascript:void(0);" onclick="showForgotId()">Forgot User ID?</a>
+        </div>
+    </div>
+
+    <!-- Forgot Password Card -->
+    <div class="card hidden" id="forgot-password-card">
+        <h2>Reset Password</h2>
+        <input type="text" placeholder="User ID">
+        <input type="email" placeholder="Registered Email ID">
+        <input type="date" placeholder="Date of Birth">
+        <div class="button-group">
+            <button class="green-btn" type="button" onclick="resetPassword()">Reset</button>
+            <button class="yellow-btn" onclick="showLogin()">Sign In</button>
+            <button class="back-btn" type="button" onclick="showLogin()">← Back</button>
+        </div>
+    </div>
+
+    <!-- Forgot User ID Card -->
+    <div class="card hidden" id="forgot-id-card">
+        <h2>Retrieve User ID</h2>
+        <input type="email" placeholder="Registered Email ID">
+        <input type="date" placeholder="Date of Birth">
+        <div class="button-group">
+            <button class="green-btn" type="button" onclick="retrieveUserId()">Verify</button>
+            <button class="yellow-btn" onclick="showLogin()">Sign In</button>
+            <button class="back-btn" type="button" onclick="showLogin()">← Back</button>
+        </div>
+    </div>
+
+    <!-- Confirmation Messages -->
+    <div id="reset-confirmation" class="hidden confirmation-message">
+        <p>Password has been reset. Please check your registered email for confirmation.</p>
+    </div>
+
+    <div id="user-id-confirmation" class="hidden confirmation-message">
+        <p>Your User ID has been sent to your registered email.</p>
+    </div>
+
+    <script>
+    let generatedCaptcha = "";
+
+    function togglePasswordVisibility() {
+        const password = document.getElementById("password");
+        const toggleIcon = document.getElementById("togglePassword");
+
+        if (password.type === "password") {
+            password.type = "text";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        } else {
+            password.type = "password";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+        }
+    }
+
+    function generateCaptcha() {
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        generatedCaptcha = "";
+        for (let i = 0; i < 5; i++) {
+            generatedCaptcha += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        document.getElementById("captcha-text").innerText = generatedCaptcha;
+    }
+
+    function showLoginSuccessToast(message) {
+        const toast = document.getElementById("login-toast");
+        toast.innerHTML = `<p>${message}</p>`;
+        toast.classList.remove("hidden");
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 3000); // Toast visible for 3 seconds
+    }
+
+    // ✨ Updated form submission with dynamic redirect
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch('/login', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                showLoginSuccessToast(data.message);
+                setTimeout(() => {
+                    window.location.href = data.redirect_url; // 🔥 Correct dynamic redirect
+                }, 2000);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    });
+
+    function showForgotPassword() {
+        document.querySelector('.login-card').style.display = 'none';
+        document.getElementById('forgot-password-card').style.display = 'flex';
+    }
+
+    function showForgotId() {
+        document.querySelector('.login-card').style.display = 'none';
+        document.getElementById('forgot-id-card').style.display = 'flex';
+    }
+
+    function showLogin() {
+        document.querySelector('.login-card').style.display = 'flex';
+        document.getElementById('forgot-password-card').style.display = 'none';
+        document.getElementById('forgot-id-card').style.display = 'none';
+    }
+
+    function resetPassword() {
+        const userId = document.querySelector('#forgot-password-card input[placeholder="User ID"]').value.trim();
+        const email = document.querySelector('#forgot-password-card input[placeholder="Registered Email ID"]').value.trim();
+        const dob = document.querySelector('#forgot-password-card input[placeholder="Date of Birth"]').value;
+
+        if (!userId || !email || !dob) {
+            alert("Please fill in all the fields before resetting the password.");
+            return;
+        }
+
+        document.getElementById('forgot-password-card').style.display = 'none';
+        document.getElementById('reset-confirmation').style.display = 'flex';
+    }
+
+    function retrieveUserId() {
+        const email = document.querySelector('#forgot-id-card input[placeholder="Registered Email ID"]').value.trim();
+        const dob = document.querySelector('#forgot-id-card input[placeholder="Date of Birth"]').value;
+
+        if (!email || !dob) {
+            alert("Please fill in all the fields to retrieve your User ID.");
+            return;
+        }
+
+        document.getElementById('forgot-id-card').style.display = 'none';
+        document.getElementById('user-id-confirmation').style.display = 'flex';
+
+        setTimeout(() => {
+            showLogin();
+            document.getElementById('user-id-confirmation').style.display = 'none';
+        }, 5000);
+    }
+
+    window.onload = generateCaptcha;
+    </script>
+
+</body>
+</html>

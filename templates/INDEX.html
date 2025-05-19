@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ChatBot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" >
+</head>
+<body>
+  <div class="chat-container" id="chat-container">
+    <!-- New greeting and cartoon girl avatar at top -->
+    <div class="greeting">
+      <div class="avatar"><img src="{{ url_for('static', filename='avatar.jpg') }}" alt=""></div>
+      <div class="greeting-text">BuddyBot</div>
+    </div>
+
+    <div class="chat-header"></div>
+    <div class="chat-box" id="chat-box"></div>
+
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Type your answer..." onkeypress="handleKey(event)" />
+      <button onclick="sendMessage()"> ➤</button>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

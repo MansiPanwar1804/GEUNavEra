@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <title>Campus Navigation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #ffffff;
+      padding: 10px 0;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+    }
+
+    .logo-line {
+  display: flex;
+  align-items: center; /* aligns vertically */
+  justify-content: center;
+  gap: 15px; /* adds space between logo and text */
+}
+
+.logo-line img {
+  height: 60px;
+  border-radius: 50%;
+  margin-top: 10px; /* this moves only the logo slightly down */
+}
+
+.logo-line span {
+  font-size: 60px;
+  font-weight: bold;
+  font-family: 'Times New Roman', Times, serif;
+  color: red;
+}
+
+
+    .title-line {
+      margin-top: 5px;
+      font-size: 20px;
+    }
+
+    .map-container {
+      width: 90%;
+      margin: 20px auto;
+      text-align: center;
+    }
+
+    .map-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: none;
+    }
+
+    .input-form {
+      margin:80px auto;
+      padding: 30px;
+      background: #f8f8f8;
+      width: 100%;
+      max-width: 800px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+
+
+    .nav-link {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  padding: 8px 12px;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 8px;
+}
+
+.nav-link:hover {
+  background-color: rgb(26, 216, 45); /* background becomes red on hover */
+  color: white;           /* text stays white */
+}
+
+
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* adds equal gap between icons */
+    margin-top: 20px;
+  }
+
+  .social-icons a {
+    font-size: 20px;
+    color: black;
+    transition: color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+  }
+
+  .social-icons a:hover {
+    color: rgb(255, 53, 17);
+    transform: scale(1.2);
+  }
+
+  /* Chatbot Button */
+.chatbot-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #29a2e8;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  z-index: 999;
+}
+
+/* Chatbot Popup */
+.chatbot-popup {
+  display: none; /* hidden by default */
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 440px;
+  height: 550px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.chatbot-header {
+  text-align: center;
+  font-weight: bold;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #f1f1f1;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.close-btn:hover {
+  background-color: #ff4d4d;
+  color: white;
+  transform: scale(1.1);
+}
+
+button[type="submit"] {
+  background-color: #29a2e8;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #1e81c0;
+}
+
+.chatbot-body {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-line">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+      <span>Graphic Era Deemed to be  University </span>
+    </div>
+    <div class="title-line"><b>GEUNavEra</b></div>
+    <p style="color:#0000FF; font-family:'Garamond', serif; font-size:20px;">Your First Friend On Campus</p>
+    <br>
+    <nav style="background-color: #282525; padding: 20px 0; text-align: center;">
+      <a href="https://geu.ac.in/about-us/" class="nav-link" style="color: white; margin: 0 15px; text-decoration: none;">About</a>
+      <a href="https://geu.ac.in/contact/" class="nav-link" style="color: white; margin: 0 15px; text-decoration: none;">Contact</a>
+      <a href="https://geu.ac.in/student-area/" class="nav-link" style="color: white; margin: 0 15px; text-decoration: none;">Student Area</a>
+      <a href="https://geu.ac.in/notices-events/" class="nav-link" style="color: white; margin: 0 15px; text-decoration: none;">Notice & Event</a>
+      <a href="https://geu.ac.in/blog/" class="nav-link" style="color: white; margin: 0 15px; text-decoration: none;">Blog</a>
+      <a href="https://geu.ac.in/university-life/" class="nav-link" style="color: white; margin: 0 15px; text-decoration: none;">Life at GEU</a>
+      <a href="https://geu.ac.in/campus-tour/" class="nav-link" style="...">Campus Tour</a>
+    </nav>
+  </header>
+
+  <div class="map-container">
+   <img src="{{ url_for('static', filename='MAP.jpg') }}" alt="Campus Map" usemap="#campusmap">
+
+    <map name="campusmap">
+      <area shape="rect" coords="413,122,442,198" title="Gate no. 2" href="http://127.0.0.1:5000/gate2">
+      <area shape="rect" coords="484, 16,655, 117" title="GEU Bus Stop" href="http://127.0.0.1:5000/geubs">
+      <area shape="rect" coords="511, 175,626, 261" title="Parking" href="http://127.0.0.1:5000/Parking">
+      <area shape="rect" coords="703, 65,786, 114" title="Chanakya Block" href="http://127.0.0.1:5000/chanakya">
+      <area shape="rect" coords="808, 161,889, 206" title="Petroleum Block" href="http://127.0.0.1:5000/Petroleum">
+      <area shape="rect" coords="675, 185,732, 284" title="K.P Nautiyal" href="http://127.0.0.1:5000/kpblock">
+      <area shape="rect" coords="743, 206,779, 285" title="Quick bite cafe" href="http://127.0.0.1:5000/qbc">
+      <area shape="rect" coords="627, 296,873, 352" title="Mechanical Block" href="http://127.0.0.1:5000/mech">
+      <area shape="rect" coords="659, 373,777, 440" title="Girls Hostel" href="http://127.0.0.1:5000/girlshostel">
+      <area shape="circle" coords="968, 164,50" title="Param Lab" href="http://127.0.0.1:5000/param">
+      <area shape="circle" coords="1015, 281,50" title="Aryabhatt Lab" href="http://127.0.0.1:5000/aryabhatt">
+      <area shape="rect" coords="1048, 154,1133, 202" title="Santosh Library" href="http://127.0.0.1:5000/santosh">
+      <area shape="rect" coords="1168, 268,1257, 318" title="B Tech block(Main building)" href="http://127.0.0.1:5000/btech">
+      <area shape="rect" coords="1229, 121,1309, 166" title="Civil block" href="http://127.0.0.1:5000/civil">
+      <area shape="rect" coords="1285, 188,1374, 247" title="Badminton Court" href="http://127.0.0.1:5000/badminton">
+      <area shape="circle" coords="1338, 299,50" title="Cafe and Gym" href="http://127.0.0.1:5000/cafe">
+      <area shape="rect" coords="1314, 341,1388, 395" title="Ravi Canteen" href="http://127.0.0.1:5000/ravi" />
+      <area shape="rect" coords="1315, 466,1392, 555" title="Boys Hostel" href="http://127.0.0.1:5000/boys">
+      <area shape="rect" coords="1224, 634,1310, 678" title="CS/IT" href="http://127.0.0.1:5000/csit">
+      <area shape="rect" coords="912, 433,987, 538" title="Tuck Shop and Dispensary" href="http://127.0.0.1:5000/tuck">
+      <area shape="rect" coords="997, 547,1069, 578" title="Gate 1" href="http://127.0.0.1:5000/gate1">
+      <area shape="rect" coords="811, 630,991, 697" title="convention centre" href="http://127.0.0.1:5000/convention">
+      <area shape="circle" coords="391, 606,50" title="Char Khamba" href="char.html"/>
+      <area shape="rect" coords="125, 345,229, 564" title="Marina Girls hostel" href="http://127.0.0.1:5000/marina">
+      <area shape="rect" coords="22, 660,166, 888" title="Graphic Era Hill university" href="http://127.0.0.1:5000/gehu">
+      <!-- Add more areas as needed -->
+    </map>
+  </div>
+
+  <div class="input-form">
+    <h2>Find the Shortest Path</h2>
+    <form action="/find_path" method="post">
+
+      <label for="choice">Choice : </label>
+      <select name="choice" id="choice" required>
+        <option value="1">Dijkstra</option>
+        <option value="2">A star</option>
+        <option value="3">Floyd Warshall</option>
+        <option value="4">Comparison of Algorithm</option>
+      </select>
+
+<br><br>
+
+      <label for="source">Source : </label>
+      <select name="source" id="source" required>
+        <option value="csit">CSIT Block</option>
+        <option value="badminton">Badminton Court</option>
+        <option value="btech">B.Tech Block</option>
+        <option value="library">Shantos Library</option>
+        <option value="civil">Civil Block</option>
+        <option value="param">Param Block</option>
+        <option value="aryabhatt">Aryabhatt Lab</option>
+        <option value="petroleum">Petroleum Block</option>
+        <option value="chanakya">Chanakya Block</option>
+        <option value="kp">K.P Nautiyal Block</option>
+        <option value="girlshostel">Girl's Hostel</option>
+        <option value="dispensary">Dispensary</option>
+        <option value="cafe">Café & Gym</option>
+        <option value="busstop">GEU Bus Stop</option>
+        <option value="tuckshop">Tuck Shop</option>
+        <option value="hospital">Graphic Era Hospital</option>
+        <option value="vishwakarma">Vishwakarma Block</option>
+        <option value="gate1">Gate No 1</option>
+        <option value="quickbite">Quick Bite</option>
+        <option value="parking">Parking</option>
+        <option value="gate2 busstop">Bus Stop Gate 2</option>
+        <option value="gate2">Gate No 2</option>
+        <option value="boyshostel">Boy's Hostel</option>
+        <option value="char khamba">Char Khamba</option>
+        <option value="marina">Marina Hostel</option>
+        <option value="gehu ground">GEHU Ground</option>
+        <option value="gehu">GEHU</option>
+        <option value="ravi canteen">Ravi Canteen</option>
+      </select>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      <label for="destination">Destination : </label>
+      <select name="destination" id="destination" required>
+        <option value="csit">CSIT Block</option>
+        <option value="badminton">Badminton Court</option>
+        <option value="btech">B.Tech Block</option>
+        <option value="library">Shantos Library</option>
+        <option value="civil">Civil Block</option>
+        <option value="param">Param Block</option>
+        <option value="aryabhatt">Aryabhatt Lab</option>
+        <option value="petroleum">Petroleum Block</option>
+        <option value="chanakya">Chanakya Block</option>
+        <option value="kp">K.P Nautiyal Block</option>
+        <option value="priyadrashani">Priyadrashani Hostel</option>
+        <option value="dispensary">Dispensary</option>
+        <option value="cafe">Café & Gym</option>
+        <option value="busstop">GEU Bus Stop</option>
+        <option value="tuckshop">Tuck Shop</option>
+        <option value="hospital">Graphic Era Hospital</option>
+        <option value="vishwakarma">Vishwakarma Block</option>
+        <option value="gate1">Gate No 1</option>
+        <option value="quickbite">Quick Bite</option>
+        <option value="parking">Parking</option>
+        <option value="gate2 busstop">Bus Stop Gate 2</option>
+        <option value="gate2">Gate No 2</option>
+        <option value="lakshmi bai">Lakshmi Bai Hostel</option>
+        <option value="char khamba">Char Khamba</option>
+        <option value="marina">Marina Hostel</option>
+        <option value="gehu ground">GEHU Ground</option>
+        <option value="gehu">GEHU</option>
+        <option value="ravi canteen">Ravi Canteen</option>
+      </select>
+
+      <br><br>
+
+      <button type="submit">Get Shortest Path</button>
+
+      <br>
+    </form>
+  <br>  <br>  <br>
+   {% if result %}
+<div style="border: 1px solid #ccc; padding: 20px; border-radius: 8px; background-color: #f9f9f9; max-width: 800px; margin: auto; text-align: center;">
+    <h3>Shortest Path Result</h3>
+    <pre style="white-space: pre-wrap; word-wrap: break-word;">{{ result }}</pre>
+
+    {% if osm_link %}
+    <p><strong>View Path on Map:</strong><br>
+        <a href="{{ osm_link }}" target="_blank" style="word-wrap: break-word; overflow-wrap: break-word; display: inline-block; max-width: 100%;">
+          {{ osm_link }}
+        </a>
+    </p>
+    {% endif %}
+</div>
+{% endif %}
+
+
+  </div>
+
+  <footer style="background-color: #c0def3; padding: 15px; text-align: center;">
+    <h3>Follow us on</h3>
+    <div class="social-icons">
+      <a href="https://www.facebook.com/geuofficial/" target="_blank">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://www.linkedin.com/school/graphic-era-official" target="_blank">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a href="https://www.instagram.com/geuofficial/" target="_blank">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.youtube.com/@GraphicEraOfficial" target="_blank">
+        <i class="fab fa-youtube"></i>
+      </a>
+      <a href="https://x.com/GraphicEraUni" target="_blank">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Chatbot Button -->
+<button class="chatbot-btn" onclick="openChatbot()">
+  <i class="fas fa-comment"></i>
+</button>
+
+<!-- Chatbot Popup -->
+<!-- Chatbot Popup -->
+<div id="chatbotPopup" class="chatbot-popup">
+  <button class="close-btn" onclick="closeChatbot()">×</button>
+  <iframe class="chatbot-body" src="{{ url_for('chatbot') }}"></iframe>
+</div>
+
+
+
+<script>
+  function openChatbot() {
+    document.getElementById('chatbotPopup').style.display = 'block';
+  }
+
+  function closeChatbot() {
+    document.getElementById('chatbotPopup').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
