@@ -11,9 +11,7 @@
 - [Architecture & Workflow](#architecture--workflow)  
 - [Installation & Setup](#installation--setup)  
 - [Usage & Walkthrough](#usage--walkthrough)  
-- [Team Responsibilities](#team-responsibilities)  
-- [Contributing](#contributing)  
-- [License](#license)  
+- [Team Responsibilities](#team-responsibilities)   
 
 ---
 
